@@ -1,0 +1,191 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-black text-matrix-text antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-matrix-800;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-matrix-glow/30 rounded-full hover:bg-matrix-glow/50 transition-colors;
+  }
+}
+
+@layer components {
+  .matrix-border {
+    @apply border border-matrix-glow/30 shadow-[0_0_10px_rgba(0,255,0,0.2)]
+    hover:border-matrix-glow/50 hover:shadow-[0_0_15px_rgba(0,255,0,0.3)]
+    transition-all duration-300;
+  }
+
+  .matrix-input {
+    @apply bg-matrix-800/50 border-matrix-glow/30 text-matrix-text 
+    focus:border-matrix-glow focus:ring-matrix-glow/50
+    placeholder:text-matrix-text/50 rounded-lg
+    hover:border-matrix-glow/40 transition-colors duration-200
+    focus:bg-matrix-800/70;
+  }
+
+  .matrix-button {
+    @apply bg-matrix-800/80 hover:bg-matrix-700 text-matrix-text
+    border border-matrix-glow/30 shadow-[0_0_10px_rgba(0,255,0,0.2)]
+    hover:shadow-[0_0_15px_rgba(0,255,0,0.4)] hover:border-matrix-glow/50
+    transition-all duration-300 active:scale-95
+    disabled:opacity-50 disabled:cursor-not-allowed
+    disabled:hover:bg-matrix-800 disabled:hover:shadow-[0_0_10px_rgba(0,255,0,0.2)]
+    focus:outline-none focus:ring-2 focus:ring-matrix-glow/50 focus:ring-offset-1 focus:ring-offset-black;
+  }
+
+  .matrix-panel {
+    @apply bg-matrix-800/30 backdrop-blur-sm matrix-border rounded-lg p-6
+    hover:bg-matrix-800/40 transition-colors duration-300
+    relative overflow-hidden;
+  }
+
+  .matrix-tooltip {
+    @apply absolute z-50 px-3 py-2 text-xs bg-matrix-900/95 text-matrix-text
+    rounded-lg shadow-lg border border-matrix-glow/30 pointer-events-none
+    opacity-0 group-hover:opacity-100 transition-opacity duration-200
+    backdrop-blur-sm max-w-xs;
+  }
+
+  .matrix-slider {
+    @apply w-full h-2 bg-matrix-800 rounded-lg appearance-none cursor-pointer
+    accent-matrix-glow hover:accent-matrix-glow/80;
+  }
+
+  .matrix-slider::-webkit-slider-thumb {
+    @apply w-4 h-4 bg-matrix-glow rounded-full appearance-none
+    hover:bg-matrix-glow/80 transition-colors duration-200
+    shadow-[0_0_10px_rgba(0,255,0,0.4)];
+  }
+
+  .matrix-checkbox {
+    @apply w-4 h-4 bg-matrix-800 border-matrix-glow/30 rounded
+    text-matrix-glow focus:ring-matrix-glow/50
+    hover:border-matrix-glow/50 transition-colors duration-200;
+  }
+
+  .matrix-card {
+    @apply relative overflow-hidden matrix-panel
+    hover:shadow-[0_0_20px_rgba(0,255,0,0.3)]
+    transition-all duration-500;
+  }
+
+  .matrix-card::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-matrix-glow/5 to-transparent
+    translate-x-[-200%] animate-shine pointer-events-none;
+  }
+
+  .matrix-heading {
+    @apply text-lg font-medium text-matrix-text
+    relative inline-flex items-center gap-2
+    before:content-[''] before:absolute before:-bottom-1 before:left-0
+    before:w-full before:h-px before:bg-matrix-glow/30
+    hover:text-matrix-glow hover:before:bg-matrix-glow
+    transition-all duration-300;
+  }
+
+  .matrix-badge {
+    @apply inline-flex items-center px-2 py-1 rounded-full
+    text-xs font-medium bg-matrix-800/50 text-matrix-text
+    border border-matrix-glow/20 shadow-[0_0_5px_rgba(0,255,0,0.2)]
+    hover:border-matrix-glow/40 hover:shadow-[0_0_10px_rgba(0,255,0,0.3)]
+    transition-all duration-300;
+  }
+
+  .scan-line {
+    @apply pointer-events-none fixed inset-0 z-50 opacity-10;
+    background: linear-gradient(
+      to bottom,
+      transparent 50%,
+      rgba(0, 255, 0, 0.2) 50%,
+      transparent 51%
+    );
+    background-size: 100% 4px;
+    animation: scan 8s linear infinite;
+  }
+
+  .glitch-effect {
+    @apply relative hover:text-matrix-glow transition-colors duration-300;
+  }
+
+  .glitch-effect::before,
+  .glitch-effect::after {
+    @apply absolute inset-0 opacity-0 hover:opacity-50 transition-opacity duration-300;
+    content: attr(data-text);
+    clip: rect(0, 900px, 0, 0);
+  }
+
+  .glitch-effect::before {
+    @apply text-matrix-glow left-[1px] animate-glitch;
+    text-shadow: -1px 0 #ff0000;
+  }
+
+  .glitch-effect::after {
+    @apply text-matrix-glow left-[-1px] animate-glitch;
+    text-shadow: 1px 0 #0000ff;
+    animation-delay: 0.3s;
+  }
+
+  .help-tooltip {
+    @apply inline-flex items-center justify-center w-5 h-5 rounded-full
+    bg-matrix-800/50 text-matrix-text text-xs border border-matrix-glow/20
+    hover:bg-matrix-700 hover:border-matrix-glow/40 cursor-help
+    transition-all duration-200;
+  }
+}
+
+@keyframes scan {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+@keyframes pulse-matrix {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes shine {
+  0% { transform: translateX(-200%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes glitch {
+  0% { clip: rect(44px, 9999px, 56px, 0); }
+  5% { clip: rect(99px, 9999px, 18px, 0); }
+  10% { clip: rect(56px, 9999px, 87px, 0); }
+  15% { clip: rect(75px, 9999px, 32px, 0); }
+  20% { clip: rect(23px, 9999px, 92px, 0); }
+  25% { clip: rect(13px, 9999px, 43px, 0); }
+  30% { clip: rect(84px, 9999px, 75px, 0); }
+  35% { clip: rect(76px, 9999px, 89px, 0); }
+  40% { clip: rect(25px, 9999px, 55px, 0); }
+  45% { clip: rect(96px, 9999px, 78px, 0); }
+  50% { clip: rect(33px, 9999px, 91px, 0); }
+  55% { clip: rect(14px, 9999px, 49px, 0); }
+  60% { clip: rect(77px, 9999px, 68px, 0); }
+  65% { clip: rect(82px, 9999px, 24px, 0); }
+  70% { clip: rect(37px, 9999px, 85px, 0); }
+  75% { clip: rect(95px, 9999px, 69px, 0); }
+  80% { clip: rect(44px, 9999px, 27px, 0); }
+  85% { clip: rect(63px, 9999px, 81px, 0); }
+  90% { clip: rect(51px, 9999px, 46px, 0); }
+  95% { clip: rect(92px, 9999px, 15px, 0); }
+  100% { clip: rect(31px, 9999px, 94px, 0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
